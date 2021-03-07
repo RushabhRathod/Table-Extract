@@ -17,7 +17,29 @@ app.set('views', path.join(__dirname + "/app/view"))
 app.enable('html', engines.mustache);
 app.set('view engine', 'html');
 
+// Upload File Functionality starts
 
+// const uploadpic = require('./app/middleware/uploadpic');
+var multer = require('multer');
+var uploadpic = multer({
+ storage: multer.diskStorage( 
+ {
+ destination: function (req, file, callback) {
+ callback(null, './app/public/');
+ },
+ filename: function (req, file, callback) { 
+ callback(null, "123" + path.extname(file.originalname));
+ }
+ }) 
+ });
+ 
+app.post('/upload', uploadpic.any(), (req, res) => {
+ 
+ console.log(req.files[0]);
+ res.send("upload");
+})
+
+//Upload File functionality ends
 
 const PORT = process.env.PORT || 8080;
 
